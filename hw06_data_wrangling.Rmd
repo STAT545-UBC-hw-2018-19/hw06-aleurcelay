@@ -1,6 +1,6 @@
 ---
 title: "hw06_data_wrangling"
-author: "Alejandra"
+author: "Alejandra Urcelay"
 date: "09/11/2018"
 output: 
   html_document:
@@ -12,17 +12,21 @@ editor_options:
 
 ## Data wrangling wrap up 
 
+ADD INTRO HERE
 
+## Topic 1: Character data
 
-## 1. Character data
+For this task I completed exercises from the [Strings chapter](https://r4ds.had.co.nz/strings.html) of R for Data Science.
 
-Read and work the exercises in the [Strings chapter](https://r4ds.had.co.nz/strings.html) of R for Data Science.
+I mostly worked with `stringr::words` and `stringr::sentences`
 
-### 14.2.5 
+### 14.2 String basics
+
+#### 14.2.5 Exercises
 
 3. Use `str_length()` and `str_sub()` to extract the middle character from a string. What will you do if the string has an even number of characters?
 
-```{r}
+```{r, warning=FALSE, message = FALSE}
 library(tidyverse)
 library(stringr)
 
@@ -60,7 +64,9 @@ st_comma(c("a", "b"))
 st_comma(c("a", "b", "c"))
 ```
 
-### 14.3.1.1 
+### 14.3 Matching patterns with regular expressions
+
+#### 14.3.1.1 Basic matches
 
 2. How would you match the sequence `"'\`?
 
@@ -76,7 +82,7 @@ str_view("w.x.y.z", "\\..\\..\\..")
 
 It matches patterns with a dot followed by a character that repeats three times. 
 
-### 14.3.2.1
+#### 14.3.2.1 Anchors
 
 1. How would you match the literal string `"$^$"` ?
 
@@ -92,6 +98,7 @@ str_view("$^$", "^\\$\\^\\$")
 * Have seven letters or more.
 
 Since the list is long, I used a match argument to show only the matching words.
+When the output is too long, I use `str_subset` instead of `str_view` to have a more compact output. 
 
 ```{r}
 str_view_match <- function(words, pattern) {
@@ -105,13 +112,13 @@ str_view_match(words, "^y")
 str_view_match(words, "x$")
 
 # have exactly three letters
-str_view_match(words, "^...$")
+str_subset(words, "^...$")
 
 # ≥ 7 letters
-str_view_match(words, ".......")
+str_subset(words, ".......")
 ```
 
-### 14.3.3.1
+#### 14.3.3.1 Character classes and alternatives
 
 1. Create regular expressions to find all words that:
 
@@ -122,7 +129,7 @@ str_view_match(words, ".......")
 
 ```{r}
 # start with a vowel
-str_view_match(words, "^[aeiou]")
+str_subset(words, "^[aeiou]")
 
 # only consonants
 str_view_match(words, "^[^aeiou]+$")
@@ -169,7 +176,7 @@ str_view(phones, "\\(\\d{2}\\)\\d{8}", match = T)
 
 The output matches the telephone number as commonly written in Mexico.
 
-### 14.3.4.1 
+#### 14.3.4.1 Repetition
 
 3. Create regular expressions to find all words that:
 
@@ -185,7 +192,189 @@ str_view_match(words, "^[^aeiou]{3}")
 str_view_match(words, "[aeiou]{3,}")
 
 # ≥ 2 vowel-consonant pairs in a row
-str_view_match(words, "([aeiou][^aeiou]){2,}")
+str_subset(words, "([aeiou][^aeiou]){2,}")
 ```
+
+#### 14.3.5.1 Grouping and backreferences
+
+2. Construct regular expressions to match words that:
+
+* Start and end with the same character.
+* Contain a repeated pair of letters (e.g. “church” contains “ch” repeated twice.)
+* Contain one letter repeated in at least three places (e.g. “eleven” contains three “e”s.)
+
+```{r}
+#start + end same character
+str_view_match(words, "^(.).*\\1$")
+
+#repeated pair of letters
+str_view_match(words, "(..).*\\1")
+
+#repeated letters
+str_view_match(words, "(.).*\\1.*\\1")
+```
+
+### 14.4 Tools
+
+#### 14.4.2 Detect matches
+
+1. For each of the following challenges, try solving by using both a single regular expression, and a combination of multiple str_detect() calls.
+
+* Find all words that start or end with x.
+* Find all words that start with a vowel and end with a consonant.
+* Are there any words that contain at least one of each different vowel?
+
+```{r}
+# start or end with x 
+str_view_match(words, "^x|x$") #single regex
+# multiple str_detect() calls
+start_x <- str_detect(words, "^x")
+end_x <- str_detect(words, "x$")
+words[start_x | end_x]
+
+#start with vowel end with consonant
+str_subset(words, "^[aeiou].*[^aeiou]$") #single regex
+#multiple str_detect()
+start_vowel <- str_detect(words, "^[aeiou]")
+end_cons <- str_detect(words, "[^aeiou]$")
+words[start_vowel & end_cons]
+
+#one of each vowel
+allv <- c("aeioux", "aei") #to check it works
+str_subset(allv, "a.*e.*i.*o.*u")
+str_subset(words, "a.*e.*i.*o.*u")
+# multiple str_detect()
+words[str_detect(words, "a") & str_detect(words, "e") &
+        str_detect(words, "i") & str_detect(words, "o") &
+        str_detect(words, "u")]
+```
+
+There are no words in `stringr::words` that contain all the vowels.
+
+2. What word has the highest number of vowels? What word has the highest proportion of vowels? 
+
+```{r}
+#highest number of vowels
+num_v <- str_count(words, "[aeiou]")
+max_v <- max(num_v)
+words[num_v == max_v]
+#highest proportion of vowels
+prop_v <- str_count(words, "[aeiou]") / str_length(words)
+max_p <- max(prop_v)
+words[prop_v == max_p]
+```
+
+8 words have 5 vowels, which is the maximum number of values among these words. 
+
+The word `a` has the highest proportion since length = 1 and num_v = 1.
+
+#### 14.4.3.1 Extract matches
+
+2. From the Harvard sentences data, extract:
+
+* The first word from each sentence.
+* All words ending in ing.
+* All plurals.
+
+```{r}
+#first word
+str_extract(sentences, "[^ ]+") %>% head()
+sentences %>% head() #to check it worked
+
+#words ending in ing
+pat_ing <- "[A-Za-z]+ing" #define pattern
+ing <- str_detect(sentences, pat_ing)
+str_extract_all(sentences[ing], pat_ing) %>%
+  unlist() %>%
+  unique() #don't show repeated words
+
+#plurals
+str_extract_all(sentences, "[A-Za-z]{3,}s") %>%
+  unlist() %>%
+  unique() %>%
+  head()
+```
+
+#### 14.4.4.1 Grouped matches
+
+1. Find all words that come after a “number” like “one”, “two”, “three” etc. Pull out both the number and the word.
+
+```{r}
+pat_num <- "(one|two|three|four|five|six|seven|eight|nine|ten) ([^ ]+)"
+sen_num <- sentences %>% str_subset(pat_num)
+sen_num %>% str_match(pat_num)
+```
+
+
+2. Find all contractions. Separate out the pieces before and after the apostrophe.
+
+```{r}
+cont <- "([A-Za-z]+)'([A-Za-z]+)"
+sen_cont <- sentences %>% str_subset(cont)
+sen_cont %>% str_match(cont)
+```
+
+#### 14.4.5.1 Replacing matches
+
+1. Replace all forward slashes in a string with backslashes.
+
+```{r}
+for_slash <- ("one/two/three")
+str_replace_all(for_slash, "/", "\\\\") %>% writeLines()
+```
+
+2. Implement a simple version of `str_to_lower()` using `replace_all()`.
+
+```{r}
+caps <- ("ABCDE")
+str_replace_all(caps, "([A-Z])", tolower)
+```
+
+#### 14.4.6.1 Splitting
+
+1. Split up a string like "apples, pears, and bananas" into individual components.
+
+```{r}
+fruity <- ("apples, pears, and bananas")
+str_split(fruity, ", and |,")
+```
+
+
+2. Why is it better to split up by `boundary("word")` than " "?
+
+```{r}
+fruity2 <- ("fruit: apples, pears, (bananas), and oranges")
+str_split(fruity2, " ")
+str_split(fruity2, boundary("word"))
+```
+
+Splitting up with `boundary("word")` is better so I don't have to specify each special punctuation character to keep out like `:` `,` or `()`.
+
+### 14.5 Other types of pattern
+
+1. How would you find all strings containing `\` with `regex()` vs. with `fixed()`?
+
+```{r}
+strings <- c("ab", "0\\1", "x\\y")
+#regex()
+str_subset(strings, regex("\\\\")) 
+#fixed()
+str_subset(strings, fixed("\\"))
+```
+
+2. What are the five most common words in sentences?
+
+```{r}
+(words_sen <- str_split(sentences, boundary("word")) %>%
+  unlist() %>%
+  str_to_lower() %>% #avoid repeated words in caps and lower
+  as.tibble() %>%
+  set_names("word") %>%
+  group_by(word) %>%
+  count(sort = TRUE) %>% #order by number
+  head(5)) #only top 5
+```
+
+
 
 
