@@ -1,0 +1,108 @@
+---
+title: "hw06_data_wrangling"
+author: "Alejandra"
+date: "17/10/2018"
+output: 
+  github_document:
+    toc: yes
+always_allow_html: yes
+---
+
+## Data wrangling wrap up 
+
+
+
+## 1. Character data
+
+Read and work the exercises in the [Strings chapter](https://r4ds.had.co.nz/strings.html) of R for Data Science.
+
+### 14.2.5 
+
+3. Use `str_length()` and `str_sub()` to extract the middle character from a string. What will you do if the string has an even number of characters?
+
+```{r}
+library(tidyverse)
+library(stringr)
+
+string1 <- "abc"
+string2 <- "abcd"
+
+str_sub(string1, floor((str_length(string1)+1)/2), ceiling((str_length(string1)+1)/2))
+
+str_sub(string2, floor((str_length(string2)+1)/2), ceiling((str_length(string2)+1)/2)) #returns the two middle characters as the string has an even number. 
+
+```
+
+
+6. Write a function that turns (e.g.) a vector c("a", "b", "c") into the string a, b, and c. Think carefully about what it should do if given a vector of length 0, 1, or 2.
+
+```{r}
+st_comma <- function (x, delim = ",") {
+  num <- length(x)
+  if(num == 0) {
+   stop("vector length = 0") #error message when trying with a length 0 vector
+  } else if(num == 1) {
+    x
+  } else if(num == 2) {
+    str_c(x[[1]], "and", x[[2]], sep = " ")
+  } else {
+   str_1 <- str_c(x[seq_len(num - 1)], delim) #all but the last
+   str_2 <- str_c("and", x[[num]], sep = " ")
+   str_c(c(str_1, str_2), collapse = " ")
+  }
+}
+
+#st_comma(c()) # as vector is length 0, the function throws an error message "vector length = 0"
+st_comma("a") 
+st_comma(c("a", "b"))
+st_comma(c("a", "b", "c"))
+```
+
+### 14.3.1.1 
+
+2. How would you match the sequence `"'\`?
+
+```{r}
+str_view("\"'\\", "\"'\\\\")
+```
+
+3. What patterns will the regular expression `\..\..\..` match? How would you represent it as a string?
+
+```{r}
+str_view("w.x.y.z", "\\..\\..\\..")
+```
+
+It matches patterns with a dot followed by a character that repeats three times. 
+
+### 14.3.2.1
+
+1. How would you match the literal string `"$^$"` ?
+
+```{r}
+str_view("$^$", "^\\$\\^\\$")
+```
+
+2. Given the corpus of common words in `stringr::words`, create regular expressions that find all words that:
+
+* Start with “y”.
+* End with “x”
+* Are exactly three letters long. (Don’t cheat by using str_length()!)
+* Have seven letters or more.
+
+Since this list is long, you might want to use the match argument to str_view() to show only the matching or non-matching words.
+
+```{r}
+# start with y
+str_view(stringr::words, "^y", match = T) 
+
+# end with x
+str_view(stringr::words, "x$", match = T)
+
+# have exactly three letters
+str_view(stringr::words, "^...$", match = T)
+
+# ≥ 7 letters
+str_view(stringr::words, ".......", match = T)
+```
+
+
