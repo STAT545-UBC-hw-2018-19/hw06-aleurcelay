@@ -377,4 +377,132 @@ str_subset(strings, fixed("\\"))
 
 
 
+## Topic 4: Work with the singer data
+
+### 4.1 Use `purrr` to map latitude and longitude into human readable information on the band’s origin places.
+
+Notice that `revgeocode(... , output = "more")` outputs a dataframe, while `revgeocode(... , output = "address")` returns a string: you have the option of dealing with nested dataframes.
+You will need to pay attention to two things:
+
+* Not all of the track have a latitude and longitude: what can we do with the missing information? (filtering, …)
+* Not all of the time we make a research through revgeocode() we get a result. What can we do to avoid those errors to bite us? (look at possibly() in purrr…)
+
+First, I need to load the necessary packages and register my google API key to use `ggmap()`.
+
+```{r, warning=FALSE, message = FALSE}
+library(tidyverse)
+library(devtools)
+install_github("dkahle/ggmap")
+library(ggplot2)
+library(ggmap)
+register_google("AIzaSyCZDZzfVa_lzlESRafTcuwH1BzethDNdcQ")
+```
+
+The dataset `singer_locations` contains information about songs and associated artists in the [Million Song Dataset](https://labrosa.ee.columbia.edu/millionsong/).
+
+Let's look at this dataframe: 
+
+```{r}
+library(singer)
+str(singer_locations)
+library(kableExtra)
+singer_locations %>% head() %>%
+  kable() %>%
+  kable_styling(full_width = F, position = "center")
+```
+
+The `singer_locations` dataframe contains geographical information associated with the artist location stored in two different formats: 1. as a (dirty!) variable named city; 2. as a latitude / longitude pair (stored in latitude, longitude respectively).
+
+From the output of the first songs, we can see that some tracks don't have this geographical information so I will filter to have only the ones that do contain this information.
+
+```{r}
+singer_geo <- singer_locations %>%
+  filter(!is.na(city)) %>%
+  select(title, artist_name, year, latitude, longitude, city) #to make table smaller
+singer_geo %>%
+  head() %>%
+  kable() %>%
+  kable_styling(full_width = F, position = "center")
+
+nrow(singer_locations)
+nrow(singer_geo)
+```
+
+After, filtering the new dataframe `singer_geo` has 4129 observations, compared to 10100 that the original dataframe had.
+However, as there are still so many observations, I will only work with the first 25 songs.
+As there are many variables too, I will only keep a few to have an easier dataset to look at.
+
+```{r}
+singer_geo <- singer_geo[1:25,]
+singer_geo %>%
+  kable() %>%
+  kable_styling(full_width = F, position = "center")
+```
+
+
+```{r}
+
+singer_address <- mapply(FUN = function(longitude, latitude) { 
+  revgeocode(c(longitude, latitude), output = "address")}, 
+  singer_geo$longitude, singer_geo$latitude)
+
+singer_address
+```
+
+Now `singer_address` contains the coressponding addresses from the given coordinates.
+Let's see if these addresses match with the variable `city`.
+
+### 4.2 Try to check wether the place in city corresponds to the information you retrieved.
+
+```{r}
+sing_add_city <- data.frame(address = singer_address, city = singer_geo$city)
+sing_add_city %>% 
+  kable() %>%
+  kable_styling(full_width = F)
+```
+
+From the table we can visually compare the cities, but let's try with some code:
+
+```{r}
+library(stringi)
+stri_detect_fixed(sing_add_city$address, sing_add_city$city)
+```
+
+From the output, we can see that 8 of the observations don't match. But some of these mismatches are because some cities/countries are in capitals in the column `city`.
+
+I will try this again, puting all in low case.
+
+```{r}
+low_address <- str_to_lower(sing_add_city$address)
+low_city <- str_to_lower(sing_add_city$city)
+words_address <- str_split(low_address, boundary("word"))
+words_city <- str_split(low_city, boundary("word"))
+
+no_match<-function(match_length){
+  match_length > 0 #to see if intersects or not
+}
+
+mapply(intersect, words_address, words_city) %>%
+  lapply(length) %>%
+  map(no_match)
+```
+
+After applying the previous code, the mismatches were reduced from 8 to 3. Observation number 15 is a true mismatch, since address = San Francisco, and city = New York. The other two cases are because in the column `city` only appears the state, and in the column address this state is abbreviated so they don't match. 
+
+This things could potentially be true to different methods (i.e. having the states abbreviated in both columns) but it may compromise the accuracy of the output.
+
+### 4.3 Go visual
+
+```{r}
+library(leaflet)
+
+singer_geo %>%  
+  leaflet()  %>%   
+  addTiles() %>%  
+  addCircles(lng = singer_geo$longitude,
+             lat = singer_geo$latitude,
+             popup = singer_geo$artist_name)
+```
+
+
 
