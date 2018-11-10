@@ -12,7 +12,9 @@ To review my assignment, please use the following link which displays the html o
 
 
 Other files:
+
 [R Markdown](hw06_data_wrangling.Rmd) which contains the original code.
+
 [README](README.md) 
 
 
