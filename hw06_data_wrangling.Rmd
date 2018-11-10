@@ -12,7 +12,9 @@ editor_options:
 
 ## Data wrangling wrap up 
 
-ADD INTRO HERE
+Data wrangling is the process of cleaning, structuring and enriching data into a desired format (Trifacta, 2018).
+
+In this assignment I chose two topics to work with to improve my data wrangling skills. In the first one I completed several exercises related to strings, and in the second one I worked with a dataset to extract and analyze geographical information. 
 
 ## Topic 1: Character data
 
@@ -39,6 +41,13 @@ str_sub(string2, floor((str_length(string2)+1)/2), ceiling((str_length(string2)+
 
 ```
 
+I chose to extract both of the middle characters when having an even number, but I could also extract only one arbitrarily:
+
+```{r}
+str_sub(string2, ceiling(str_length(string2)/2), ceiling(str_length(string2)/2))
+```
+
+This way, I extract only one of the middle characters. 
 
 6. Write a function that turns (e.g.) a vector c("a", "b", "c") into the string a, b, and c. Think carefully about what it should do if given a vector of length 0, 1, or 2.
 
@@ -94,7 +103,7 @@ str_view("$^$", "^\\$\\^\\$")
 
 * Start with “y”.
 * End with “x”
-* Are exactly three letters long. (Don’t cheat by using str_length()!)
+* Are exactly three letters long. (Don’t cheat by using `str_length()`!)
 * Have seven letters or more.
 
 Since the list is long, I used a match argument to show only the matching words.
@@ -218,7 +227,7 @@ str_view_match(words, "(.).*\\1.*\\1")
 
 #### 14.4.2 Detect matches
 
-1. For each of the following challenges, try solving by using both a single regular expression, and a combination of multiple str_detect() calls.
+1. For each of the following challenges, try solving by using both a single regular expression, and a combination of multiple `str_detect()` calls.
 
 * Find all words that start or end with x.
 * Find all words that start with a vowel and end with a consonant.
@@ -381,11 +390,11 @@ str_subset(strings, fixed("\\"))
 
 ### 4.1 Use `purrr` to map latitude and longitude into human readable information on the band’s origin places.
 
-Notice that `revgeocode(... , output = "more")` outputs a dataframe, while `revgeocode(... , output = "address")` returns a string: you have the option of dealing with nested dataframes.
+Notice that `revgeocode(... , output = "more")` outputs a data frame, while `revgeocode(... , output = "address")` returns a string: you have the option of dealing with nested data frames.
 You will need to pay attention to two things:
 
 * Not all of the track have a latitude and longitude: what can we do with the missing information? (filtering, …)
-* Not all of the time we make a research through revgeocode() we get a result. What can we do to avoid those errors to bite us? (look at possibly() in purrr…)
+* Not all of the time we make a research through `revgeocode()` we get a result. What can we do to avoid those errors to bite us? (look at possibly() in purrr…)
 
 First, I need to load the necessary packages and register my google API key to use `ggmap()`.
 
@@ -398,9 +407,9 @@ library(ggmap)
 register_google("AIzaSyCZDZzfVa_lzlESRafTcuwH1BzethDNdcQ")
 ```
 
-The dataset `singer_locations` contains information about songs and associated artists in the [Million Song Dataset](https://labrosa.ee.columbia.edu/millionsong/).
+The data set `singer_locations` contains information about songs and associated artists in the [Million Song Dataset](https://labrosa.ee.columbia.edu/millionsong/).
 
-Let's look at this dataframe: 
+Let's look at this data frame: 
 
 ```{r}
 library(singer)
@@ -411,7 +420,7 @@ singer_locations %>% head() %>%
   kable_styling(full_width = F, position = "center")
 ```
 
-The `singer_locations` dataframe contains geographical information associated with the artist location stored in two different formats: 1. as a (dirty!) variable named city; 2. as a latitude / longitude pair (stored in latitude, longitude respectively).
+The `singer_locations` data frame contains geographical information associated with the artist location stored in two different formats: 1. as a (dirty!) variable named city; 2. as a latitude / longitude pair (stored in latitude, longitude respectively).
 
 From the output of the first songs, we can see that some tracks don't have this geographical information so I will filter to have only the ones that do contain this information.
 
@@ -428,9 +437,9 @@ nrow(singer_locations)
 nrow(singer_geo)
 ```
 
-After, filtering the new dataframe `singer_geo` has 4129 observations, compared to 10100 that the original dataframe had.
+After, filtering the new data frame `singer_geo` has 4129 observations, compared to 10100 that the original data frame had.
 However, as there are still so many observations, I will only work with the first 25 songs.
-As there are many variables too, I will only keep a few to have an easier dataset to look at.
+As there are many variables too, I will only keep a few to have an easier data set to look at.
 
 ```{r}
 singer_geo <- singer_geo[1:25,]
@@ -449,7 +458,7 @@ singer_address <- mapply(FUN = function(longitude, latitude) {
 singer_address
 ```
 
-Now `singer_address` contains the coressponding addresses from the given coordinates.
+Now `singer_address` contains the corresponding addresses from the given coordinates.
 Let's see if these addresses match with the variable `city`.
 
 ### 4.2 Try to check wether the place in city corresponds to the information you retrieved.
@@ -470,7 +479,7 @@ stri_detect_fixed(sing_add_city$address, sing_add_city$city)
 
 From the output, we can see that 8 of the observations don't match. But some of these mismatches are because some cities/countries are in capitals in the column `city`.
 
-I will try this again, puting all in low case.
+I will try this again, putting all in low case.
 
 ```{r}
 low_address <- str_to_lower(sing_add_city$address)
@@ -501,8 +510,21 @@ singer_geo %>%
   addTiles() %>%  
   addCircles(lng = singer_geo$longitude,
              lat = singer_geo$latitude,
-             popup = singer_geo$artist_name)
+             popup = singer_geo$artist_name, 
+             color = "deeppink")
 ```
+
+The map can show the artist name that corresponds to the city of each pink circle.
+
+## References
+
+* [What is Data Wrangling?](https://www.trifacta.com/data-wrangling/)
+* [Strings](https://r4ds.had.co.nz/strings.html)
+* [Google API key](https://github.com/dkahle/ggmap/issues/51#issuecomment-428947722)
+* [ggmap](https://cran.r-project.org/web/packages/ggmap/ggmap.pdf)
+* [Applying revgecode](https://stackoverflow.com/questions/22911642/applying-revgeocode-to-a-list-of-longitude-latitude-coordinates)
+* [Test if charachters are in a string](https://stackoverflow.com/questions/10128617/test-if-characters-are-in-a-string)
+
 
 
 

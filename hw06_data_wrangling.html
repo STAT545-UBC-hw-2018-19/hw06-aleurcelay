@@ -4231,12 +4231,14 @@ $(document).ready(function () {
 <li><a href="#try-to-check-wether-the-place-in-city-corresponds-to-the-information-you-retrieved.">4.2 Try to check wether the place in city corresponds to the information you retrieved.</a></li>
 <li><a href="#go-visual">4.3 Go visual</a></li>
 </ul></li>
+<li><a href="#references">References</a></li>
 </ul>
 </div>
 
 <div id="data-wrangling-wrap-up" class="section level2">
 <h2>Data wrangling wrap up</h2>
-<p>ADD INTRO HERE</p>
+<p>Data wrangling is the process of cleaning, structuring and enriching data into a desired format (Trifacta, 2018).</p>
+<p>In this assignment I chose two topics to work with to improve my data wrangling skills. In the first one I completed several exercises related to strings, and in the second one I worked with a dataset to extract and analyze geographical information.</p>
 </div>
 <div id="topic-1-character-data" class="section level2">
 <h2>Topic 1: Character data</h2>
@@ -4259,6 +4261,10 @@ str_sub(string1, floor((str_length(string1)+1)/2), ceiling((str_length(string1)+
 <pre><code>## [1] &quot;b&quot;</code></pre>
 <pre class="r"><code>str_sub(string2, floor((str_length(string2)+1)/2), ceiling((str_length(string2)+1)/2)) #returns the two middle characters as the string has an even number. </code></pre>
 <pre><code>## [1] &quot;bc&quot;</code></pre>
+<p>I chose to extract both of the middle characters when having an even number, but I could also extract only one arbitrarily:</p>
+<pre class="r"><code>str_sub(string2, ceiling(str_length(string2)/2), ceiling(str_length(string2)/2))</code></pre>
+<pre><code>## [1] &quot;b&quot;</code></pre>
+<p>This way, I extract only one of the middle characters.</p>
 <ol start="6" style="list-style-type: decimal">
 <li>Write a function that turns (e.g.) a vector c(“a”, “b”, “c”) into the string a, b, and c. Think carefully about what it should do if given a vector of length 0, 1, or 2.</li>
 </ol>
@@ -4294,14 +4300,14 @@ st_comma(&quot;a&quot;) </code></pre>
 <li>How would you match the sequence <code>&quot;'\</code>?</li>
 </ol>
 <pre class="r"><code>str_view(&quot;\&quot;'\\&quot;, &quot;\&quot;'\\\\&quot;)</code></pre>
-<div id="htmlwidget-832683c59d3691d018aa" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-832683c59d3691d018aa">{"x":{"html":"<ul>\n  <li><span class='match'>\"'\\<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-b702425e382679491e42" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b702425e382679491e42">{"x":{"html":"<ul>\n  <li><span class='match'>\"'\\<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <ol start="3" style="list-style-type: decimal">
 <li>What patterns will the regular expression <code>\..\..\..</code> match? How would you represent it as a string?</li>
 </ol>
 <pre class="r"><code>str_view(&quot;w.x.y.z&quot;, &quot;\\..\\..\\..&quot;)</code></pre>
-<div id="htmlwidget-c2d4a1f124e795bc2f7c" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-c2d4a1f124e795bc2f7c">{"x":{"html":"<ul>\n  <li>w<span class='match'>.x.y.z<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-2aadfea47ccbdf7be814" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2aadfea47ccbdf7be814">{"x":{"html":"<ul>\n  <li>w<span class='match'>.x.y.z<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <p>It matches patterns with a dot followed by a character that repeats three times.</p>
 </div>
 <div id="anchors" class="section level4">
@@ -4310,15 +4316,15 @@ st_comma(&quot;a&quot;) </code></pre>
 <li>How would you match the literal string <code>&quot;$^$&quot;</code> ?</li>
 </ol>
 <pre class="r"><code>str_view(&quot;$^$&quot;, &quot;^\\$\\^\\$&quot;)</code></pre>
-<div id="htmlwidget-45296190017d20412555" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-45296190017d20412555">{"x":{"html":"<ul>\n  <li><span class='match'>$^$<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-128889db9c9bd585ed6d" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-128889db9c9bd585ed6d">{"x":{"html":"<ul>\n  <li><span class='match'>$^$<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <ol start="2" style="list-style-type: decimal">
 <li>Given the corpus of common words in <code>stringr::words</code>, create regular expressions that find all words that:</li>
 </ol>
 <ul>
 <li>Start with “y”.</li>
 <li>End with “x”</li>
-<li>Are exactly three letters long. (Don’t cheat by using str_length()!)</li>
+<li>Are exactly three letters long. (Don’t cheat by using <code>str_length()</code>!)</li>
 <li>Have seven letters or more.</li>
 </ul>
 <p>Since the list is long, I used a match argument to show only the matching words. When the output is too long, I use <code>str_subset</code> instead of <code>str_view</code> to have a more compact output.</p>
@@ -4328,12 +4334,12 @@ st_comma(&quot;a&quot;) </code></pre>
 
 # start with y
 str_view_match(words, &quot;^y&quot;) </code></pre>
-<div id="htmlwidget-2adbea19f370c9e3e0a6" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-2adbea19f370c9e3e0a6">{"x":{"html":"<ul>\n  <li><span class='match'>y<\/span>ear<\/li>\n  <li><span class='match'>y<\/span>es<\/li>\n  <li><span class='match'>y<\/span>esterday<\/li>\n  <li><span class='match'>y<\/span>et<\/li>\n  <li><span class='match'>y<\/span>ou<\/li>\n  <li><span class='match'>y<\/span>oung<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-fb65ec215b8ea00c4ca0" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-fb65ec215b8ea00c4ca0">{"x":{"html":"<ul>\n  <li><span class='match'>y<\/span>ear<\/li>\n  <li><span class='match'>y<\/span>es<\/li>\n  <li><span class='match'>y<\/span>esterday<\/li>\n  <li><span class='match'>y<\/span>et<\/li>\n  <li><span class='match'>y<\/span>ou<\/li>\n  <li><span class='match'>y<\/span>oung<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <pre class="r"><code># end with x
 str_view_match(words, &quot;x$&quot;)</code></pre>
-<div id="htmlwidget-3d74bb4e05d49cd588eb" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3d74bb4e05d49cd588eb">{"x":{"html":"<ul>\n  <li>bo<span class='match'>x<\/span><\/li>\n  <li>se<span class='match'>x<\/span><\/li>\n  <li>si<span class='match'>x<\/span><\/li>\n  <li>ta<span class='match'>x<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-528f27606612007a6c7c" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-528f27606612007a6c7c">{"x":{"html":"<ul>\n  <li>bo<span class='match'>x<\/span><\/li>\n  <li>se<span class='match'>x<\/span><\/li>\n  <li>si<span class='match'>x<\/span><\/li>\n  <li>ta<span class='match'>x<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <pre class="r"><code># have exactly three letters
 str_subset(words, &quot;^...$&quot;)</code></pre>
 <pre><code>##   [1] &quot;act&quot; &quot;add&quot; &quot;age&quot; &quot;ago&quot; &quot;air&quot; &quot;all&quot; &quot;and&quot; &quot;any&quot; &quot;arm&quot; &quot;art&quot; &quot;ask&quot;
@@ -4443,46 +4449,46 @@ str_subset(words, &quot;^[aeiou]&quot;)</code></pre>
 ## [171] &quot;until&quot;       &quot;up&quot;          &quot;upon&quot;        &quot;use&quot;         &quot;usual&quot;</code></pre>
 <pre class="r"><code># only consonants
 str_view_match(words, &quot;^[^aeiou]+$&quot;)</code></pre>
-<div id="htmlwidget-8bf515755a373a5c85c0" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-8bf515755a373a5c85c0">{"x":{"html":"<ul>\n  <li><span class='match'>by<\/span><\/li>\n  <li><span class='match'>dry<\/span><\/li>\n  <li><span class='match'>fly<\/span><\/li>\n  <li><span class='match'>mrs<\/span><\/li>\n  <li><span class='match'>try<\/span><\/li>\n  <li><span class='match'>why<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-3b35523b030605155551" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3b35523b030605155551">{"x":{"html":"<ul>\n  <li><span class='match'>by<\/span><\/li>\n  <li><span class='match'>dry<\/span><\/li>\n  <li><span class='match'>fly<\/span><\/li>\n  <li><span class='match'>mrs<\/span><\/li>\n  <li><span class='match'>try<\/span><\/li>\n  <li><span class='match'>why<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <pre class="r"><code># end with ed, but not with eed
 str_view_match(words, &quot;^ed$|[^e]ed$&quot;)</code></pre>
-<div id="htmlwidget-5fac5913c1f7858d7f85" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-5fac5913c1f7858d7f85">{"x":{"html":"<ul>\n  <li><span class='match'>bed<\/span><\/li>\n  <li>hund<span class='match'>red<\/span><\/li>\n  <li><span class='match'>red<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-56423d493de33b387db5" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-56423d493de33b387db5">{"x":{"html":"<ul>\n  <li><span class='match'>bed<\/span><\/li>\n  <li>hund<span class='match'>red<\/span><\/li>\n  <li><span class='match'>red<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <pre class="r"><code># end with ing or ise
 str_view_match(words, &quot;ing$|ise$&quot;)</code></pre>
-<div id="htmlwidget-56a37d60763f63c1a979" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-56a37d60763f63c1a979">{"x":{"html":"<ul>\n  <li>advert<span class='match'>ise<\/span><\/li>\n  <li>br<span class='match'>ing<\/span><\/li>\n  <li>dur<span class='match'>ing<\/span><\/li>\n  <li>even<span class='match'>ing<\/span><\/li>\n  <li>exerc<span class='match'>ise<\/span><\/li>\n  <li>k<span class='match'>ing<\/span><\/li>\n  <li>mean<span class='match'>ing<\/span><\/li>\n  <li>morn<span class='match'>ing<\/span><\/li>\n  <li>otherw<span class='match'>ise<\/span><\/li>\n  <li>pract<span class='match'>ise<\/span><\/li>\n  <li>ra<span class='match'>ise<\/span><\/li>\n  <li>real<span class='match'>ise<\/span><\/li>\n  <li>r<span class='match'>ing<\/span><\/li>\n  <li>r<span class='match'>ise<\/span><\/li>\n  <li>s<span class='match'>ing<\/span><\/li>\n  <li>surpr<span class='match'>ise<\/span><\/li>\n  <li>th<span class='match'>ing<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-bc2ada92e685eb783938" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-bc2ada92e685eb783938">{"x":{"html":"<ul>\n  <li>advert<span class='match'>ise<\/span><\/li>\n  <li>br<span class='match'>ing<\/span><\/li>\n  <li>dur<span class='match'>ing<\/span><\/li>\n  <li>even<span class='match'>ing<\/span><\/li>\n  <li>exerc<span class='match'>ise<\/span><\/li>\n  <li>k<span class='match'>ing<\/span><\/li>\n  <li>mean<span class='match'>ing<\/span><\/li>\n  <li>morn<span class='match'>ing<\/span><\/li>\n  <li>otherw<span class='match'>ise<\/span><\/li>\n  <li>pract<span class='match'>ise<\/span><\/li>\n  <li>ra<span class='match'>ise<\/span><\/li>\n  <li>real<span class='match'>ise<\/span><\/li>\n  <li>r<span class='match'>ing<\/span><\/li>\n  <li>r<span class='match'>ise<\/span><\/li>\n  <li>s<span class='match'>ing<\/span><\/li>\n  <li>surpr<span class='match'>ise<\/span><\/li>\n  <li>th<span class='match'>ing<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <ol start="2" style="list-style-type: decimal">
 <li>Empirically verify the rule “i before e except after c”.</li>
 </ol>
 <pre class="r"><code>str_view_match(words, &quot;([^c]ie|cei)&quot;) #rule</code></pre>
-<div id="htmlwidget-38c4f02adf655c02b976" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-38c4f02adf655c02b976">{"x":{"html":"<ul>\n  <li>ac<span class='match'>hie<\/span>ve<\/li>\n  <li>be<span class='match'>lie<\/span>ve<\/li>\n  <li>b<span class='match'>rie<\/span>f<\/li>\n  <li>c<span class='match'>lie<\/span>nt<\/li>\n  <li><span class='match'>die<\/span><\/li>\n  <li>expe<span class='match'>rie<\/span>nce<\/li>\n  <li><span class='match'>fie<\/span>ld<\/li>\n  <li>f<span class='match'>rie<\/span>nd<\/li>\n  <li><span class='match'>lie<\/span><\/li>\n  <li><span class='match'>pie<\/span>ce<\/li>\n  <li>q<span class='match'>uie<\/span>t<\/li>\n  <li>re<span class='match'>cei<\/span>ve<\/li>\n  <li><span class='match'>tie<\/span><\/li>\n  <li><span class='match'>vie<\/span>w<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-ba0d65e838679fb21060" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ba0d65e838679fb21060">{"x":{"html":"<ul>\n  <li>ac<span class='match'>hie<\/span>ve<\/li>\n  <li>be<span class='match'>lie<\/span>ve<\/li>\n  <li>b<span class='match'>rie<\/span>f<\/li>\n  <li>c<span class='match'>lie<\/span>nt<\/li>\n  <li><span class='match'>die<\/span><\/li>\n  <li>expe<span class='match'>rie<\/span>nce<\/li>\n  <li><span class='match'>fie<\/span>ld<\/li>\n  <li>f<span class='match'>rie<\/span>nd<\/li>\n  <li><span class='match'>lie<\/span><\/li>\n  <li><span class='match'>pie<\/span>ce<\/li>\n  <li>q<span class='match'>uie<\/span>t<\/li>\n  <li>re<span class='match'>cei<\/span>ve<\/li>\n  <li><span class='match'>tie<\/span><\/li>\n  <li><span class='match'>vie<\/span>w<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <pre class="r"><code>str_view_match(words, &quot;(cie)&quot;) #exceptions?</code></pre>
-<div id="htmlwidget-a89db42b19c8a9df5d3c" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-a89db42b19c8a9df5d3c">{"x":{"html":"<ul>\n  <li>s<span class='match'>cie<\/span>nce<\/li>\n  <li>so<span class='match'>cie<\/span>ty<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-47920127dbfd75eca379" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-47920127dbfd75eca379">{"x":{"html":"<ul>\n  <li>s<span class='match'>cie<\/span>nce<\/li>\n  <li>so<span class='match'>cie<\/span>ty<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <p>From the second output we can see there are some exceptions for this rule, such as the words <code>science</code> and <code>society</code>.</p>
 <ol start="3" style="list-style-type: decimal">
 <li>Is “q” always followed by a “u”?</li>
 </ol>
 <pre class="r"><code>str_view_match(words, &quot;q[^u]&quot;)</code></pre>
-<div id="htmlwidget-92d78f6534d3ad650120" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-92d78f6534d3ad650120">{"x":{"html":"<ul>\n  <li><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-b31dc896614f2bb856d2" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b31dc896614f2bb856d2">{"x":{"html":"<ul>\n  <li><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <p>There were no words in the output, so “q” is always followed by a “u”.</p>
 <ol start="4" style="list-style-type: decimal">
 <li>Write a regular expression that matches a word if it’s probably written in British English, not American English.</li>
 </ol>
 <pre class="r"><code>str_view_match(words, &quot;ise$|our&quot;) #ise instead of ize and our instead of or</code></pre>
-<div id="htmlwidget-ee3fcb508535dc4b6a54" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ee3fcb508535dc4b6a54">{"x":{"html":"<ul>\n  <li>advert<span class='match'>ise<\/span><\/li>\n  <li>col<span class='match'>our<\/span><\/li>\n  <li>c<span class='match'>our<\/span>se<\/li>\n  <li>c<span class='match'>our<\/span>t<\/li>\n  <li>enc<span class='match'>our<\/span>age<\/li>\n  <li>exerc<span class='match'>ise<\/span><\/li>\n  <li>fav<span class='match'>our<\/span><\/li>\n  <li>f<span class='match'>our<\/span><\/li>\n  <li>h<span class='match'>our<\/span><\/li>\n  <li>lab<span class='match'>our<\/span><\/li>\n  <li>otherw<span class='match'>ise<\/span><\/li>\n  <li>pract<span class='match'>ise<\/span><\/li>\n  <li>ra<span class='match'>ise<\/span><\/li>\n  <li>real<span class='match'>ise<\/span><\/li>\n  <li>res<span class='match'>our<\/span>ce<\/li>\n  <li>r<span class='match'>ise<\/span><\/li>\n  <li>surpr<span class='match'>ise<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-afb2e0704a4bf572bfd8" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-afb2e0704a4bf572bfd8">{"x":{"html":"<ul>\n  <li>advert<span class='match'>ise<\/span><\/li>\n  <li>col<span class='match'>our<\/span><\/li>\n  <li>c<span class='match'>our<\/span>se<\/li>\n  <li>c<span class='match'>our<\/span>t<\/li>\n  <li>enc<span class='match'>our<\/span>age<\/li>\n  <li>exerc<span class='match'>ise<\/span><\/li>\n  <li>fav<span class='match'>our<\/span><\/li>\n  <li>f<span class='match'>our<\/span><\/li>\n  <li>h<span class='match'>our<\/span><\/li>\n  <li>lab<span class='match'>our<\/span><\/li>\n  <li>otherw<span class='match'>ise<\/span><\/li>\n  <li>pract<span class='match'>ise<\/span><\/li>\n  <li>ra<span class='match'>ise<\/span><\/li>\n  <li>real<span class='match'>ise<\/span><\/li>\n  <li>res<span class='match'>our<\/span>ce<\/li>\n  <li>r<span class='match'>ise<\/span><\/li>\n  <li>surpr<span class='match'>ise<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <ol start="5" style="list-style-type: decimal">
 <li>Create a regular expression that will match telephone numbers as commonly written in your country</li>
 </ol>
 <pre class="r"><code>phones &lt;- c(&quot;(55)32498722&quot;, &quot;(778)952-5873&quot;)
 str_view(phones, &quot;\\(\\d{2}\\)\\d{8}&quot;, match = T)</code></pre>
-<div id="htmlwidget-283b0df56f2ba327be76" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-283b0df56f2ba327be76">{"x":{"html":"<ul>\n  <li><span class='match'>(55)32498722<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-2104ee821115d4b8eead" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2104ee821115d4b8eead">{"x":{"html":"<ul>\n  <li><span class='match'>(55)32498722<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <p>The output matches the telephone number as commonly written in Mexico.</p>
 </div>
 <div id="repetition" class="section level4">
@@ -4497,12 +4503,12 @@ str_view(phones, &quot;\\(\\d{2}\\)\\d{8}&quot;, match = T)</code></pre>
 </ul>
 <pre class="r"><code># start with 3 consonants
 str_view_match(words, &quot;^[^aeiou]{3}&quot;)</code></pre>
-<div id="htmlwidget-8cdb7bf471894cf2bbb9" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-8cdb7bf471894cf2bbb9">{"x":{"html":"<ul>\n  <li><span class='match'>Chr<\/span>ist<\/li>\n  <li><span class='match'>Chr<\/span>istmas<\/li>\n  <li><span class='match'>dry<\/span><\/li>\n  <li><span class='match'>fly<\/span><\/li>\n  <li><span class='match'>mrs<\/span><\/li>\n  <li><span class='match'>sch<\/span>eme<\/li>\n  <li><span class='match'>sch<\/span>ool<\/li>\n  <li><span class='match'>str<\/span>aight<\/li>\n  <li><span class='match'>str<\/span>ategy<\/li>\n  <li><span class='match'>str<\/span>eet<\/li>\n  <li><span class='match'>str<\/span>ike<\/li>\n  <li><span class='match'>str<\/span>ong<\/li>\n  <li><span class='match'>str<\/span>ucture<\/li>\n  <li><span class='match'>sys<\/span>tem<\/li>\n  <li><span class='match'>thr<\/span>ee<\/li>\n  <li><span class='match'>thr<\/span>ough<\/li>\n  <li><span class='match'>thr<\/span>ow<\/li>\n  <li><span class='match'>try<\/span><\/li>\n  <li><span class='match'>typ<\/span>e<\/li>\n  <li><span class='match'>why<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-0e1836289e9b5ba2de06" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-0e1836289e9b5ba2de06">{"x":{"html":"<ul>\n  <li><span class='match'>Chr<\/span>ist<\/li>\n  <li><span class='match'>Chr<\/span>istmas<\/li>\n  <li><span class='match'>dry<\/span><\/li>\n  <li><span class='match'>fly<\/span><\/li>\n  <li><span class='match'>mrs<\/span><\/li>\n  <li><span class='match'>sch<\/span>eme<\/li>\n  <li><span class='match'>sch<\/span>ool<\/li>\n  <li><span class='match'>str<\/span>aight<\/li>\n  <li><span class='match'>str<\/span>ategy<\/li>\n  <li><span class='match'>str<\/span>eet<\/li>\n  <li><span class='match'>str<\/span>ike<\/li>\n  <li><span class='match'>str<\/span>ong<\/li>\n  <li><span class='match'>str<\/span>ucture<\/li>\n  <li><span class='match'>sys<\/span>tem<\/li>\n  <li><span class='match'>thr<\/span>ee<\/li>\n  <li><span class='match'>thr<\/span>ough<\/li>\n  <li><span class='match'>thr<\/span>ow<\/li>\n  <li><span class='match'>try<\/span><\/li>\n  <li><span class='match'>typ<\/span>e<\/li>\n  <li><span class='match'>why<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <pre class="r"><code># ≥ 3 vowels in a row
 str_view_match(words, &quot;[aeiou]{3,}&quot;)</code></pre>
-<div id="htmlwidget-a1b58f1d0c470be912d3" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-a1b58f1d0c470be912d3">{"x":{"html":"<ul>\n  <li>b<span class='match'>eau<\/span>ty<\/li>\n  <li>obv<span class='match'>iou<\/span>s<\/li>\n  <li>prev<span class='match'>iou<\/span>s<\/li>\n  <li>q<span class='match'>uie<\/span>t<\/li>\n  <li>ser<span class='match'>iou<\/span>s<\/li>\n  <li>var<span class='match'>iou<\/span>s<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-59385c0627240540aadb" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-59385c0627240540aadb">{"x":{"html":"<ul>\n  <li>b<span class='match'>eau<\/span>ty<\/li>\n  <li>obv<span class='match'>iou<\/span>s<\/li>\n  <li>prev<span class='match'>iou<\/span>s<\/li>\n  <li>q<span class='match'>uie<\/span>t<\/li>\n  <li>ser<span class='match'>iou<\/span>s<\/li>\n  <li>var<span class='match'>iou<\/span>s<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <pre class="r"><code># ≥ 2 vowel-consonant pairs in a row
 str_subset(words, &quot;([aeiou][^aeiou]){2,}&quot;)</code></pre>
 <pre><code>##   [1] &quot;absolute&quot;    &quot;agent&quot;       &quot;along&quot;       &quot;america&quot;     &quot;another&quot;    
@@ -4552,16 +4558,16 @@ str_subset(words, &quot;([aeiou][^aeiou]){2,}&quot;)</code></pre>
 </ul>
 <pre class="r"><code>#start + end same character
 str_view_match(words, &quot;^(.).*\\1$&quot;)</code></pre>
-<div id="htmlwidget-6ba07fa17b4a1f3edd1b" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-6ba07fa17b4a1f3edd1b">{"x":{"html":"<ul>\n  <li><span class='match'>america<\/span><\/li>\n  <li><span class='match'>area<\/span><\/li>\n  <li><span class='match'>dad<\/span><\/li>\n  <li><span class='match'>dead<\/span><\/li>\n  <li><span class='match'>depend<\/span><\/li>\n  <li><span class='match'>educate<\/span><\/li>\n  <li><span class='match'>else<\/span><\/li>\n  <li><span class='match'>encourage<\/span><\/li>\n  <li><span class='match'>engine<\/span><\/li>\n  <li><span class='match'>europe<\/span><\/li>\n  <li><span class='match'>evidence<\/span><\/li>\n  <li><span class='match'>example<\/span><\/li>\n  <li><span class='match'>excuse<\/span><\/li>\n  <li><span class='match'>exercise<\/span><\/li>\n  <li><span class='match'>expense<\/span><\/li>\n  <li><span class='match'>experience<\/span><\/li>\n  <li><span class='match'>eye<\/span><\/li>\n  <li><span class='match'>health<\/span><\/li>\n  <li><span class='match'>high<\/span><\/li>\n  <li><span class='match'>knock<\/span><\/li>\n  <li><span class='match'>level<\/span><\/li>\n  <li><span class='match'>local<\/span><\/li>\n  <li><span class='match'>nation<\/span><\/li>\n  <li><span class='match'>non<\/span><\/li>\n  <li><span class='match'>rather<\/span><\/li>\n  <li><span class='match'>refer<\/span><\/li>\n  <li><span class='match'>remember<\/span><\/li>\n  <li><span class='match'>serious<\/span><\/li>\n  <li><span class='match'>stairs<\/span><\/li>\n  <li><span class='match'>test<\/span><\/li>\n  <li><span class='match'>tonight<\/span><\/li>\n  <li><span class='match'>transport<\/span><\/li>\n  <li><span class='match'>treat<\/span><\/li>\n  <li><span class='match'>trust<\/span><\/li>\n  <li><span class='match'>window<\/span><\/li>\n  <li><span class='match'>yesterday<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-fb5aacf2aa88e65f4f23" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-fb5aacf2aa88e65f4f23">{"x":{"html":"<ul>\n  <li><span class='match'>america<\/span><\/li>\n  <li><span class='match'>area<\/span><\/li>\n  <li><span class='match'>dad<\/span><\/li>\n  <li><span class='match'>dead<\/span><\/li>\n  <li><span class='match'>depend<\/span><\/li>\n  <li><span class='match'>educate<\/span><\/li>\n  <li><span class='match'>else<\/span><\/li>\n  <li><span class='match'>encourage<\/span><\/li>\n  <li><span class='match'>engine<\/span><\/li>\n  <li><span class='match'>europe<\/span><\/li>\n  <li><span class='match'>evidence<\/span><\/li>\n  <li><span class='match'>example<\/span><\/li>\n  <li><span class='match'>excuse<\/span><\/li>\n  <li><span class='match'>exercise<\/span><\/li>\n  <li><span class='match'>expense<\/span><\/li>\n  <li><span class='match'>experience<\/span><\/li>\n  <li><span class='match'>eye<\/span><\/li>\n  <li><span class='match'>health<\/span><\/li>\n  <li><span class='match'>high<\/span><\/li>\n  <li><span class='match'>knock<\/span><\/li>\n  <li><span class='match'>level<\/span><\/li>\n  <li><span class='match'>local<\/span><\/li>\n  <li><span class='match'>nation<\/span><\/li>\n  <li><span class='match'>non<\/span><\/li>\n  <li><span class='match'>rather<\/span><\/li>\n  <li><span class='match'>refer<\/span><\/li>\n  <li><span class='match'>remember<\/span><\/li>\n  <li><span class='match'>serious<\/span><\/li>\n  <li><span class='match'>stairs<\/span><\/li>\n  <li><span class='match'>test<\/span><\/li>\n  <li><span class='match'>tonight<\/span><\/li>\n  <li><span class='match'>transport<\/span><\/li>\n  <li><span class='match'>treat<\/span><\/li>\n  <li><span class='match'>trust<\/span><\/li>\n  <li><span class='match'>window<\/span><\/li>\n  <li><span class='match'>yesterday<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <pre class="r"><code>#repeated pair of letters
 str_view_match(words, &quot;(..).*\\1&quot;)</code></pre>
-<div id="htmlwidget-8dc23070d0644fec3d62" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-8dc23070d0644fec3d62">{"x":{"html":"<ul>\n  <li>ap<span class='match'>propr<\/span>iate<\/li>\n  <li><span class='match'>church<\/span><\/li>\n  <li>c<span class='match'>ondition<\/span><\/li>\n  <li><span class='match'>decide<\/span><\/li>\n  <li><span class='match'>environmen<\/span>t<\/li>\n  <li>l<span class='match'>ondon<\/span><\/li>\n  <li>pa<span class='match'>ragra<\/span>ph<\/li>\n  <li>p<span class='match'>articular<\/span><\/li>\n  <li><span class='match'>photograph<\/span><\/li>\n  <li>p<span class='match'>repare<\/span><\/li>\n  <li>p<span class='match'>ressure<\/span><\/li>\n  <li>r<span class='match'>emem<\/span>ber<\/li>\n  <li><span class='match'>repre<\/span>sent<\/li>\n  <li><span class='match'>require<\/span><\/li>\n  <li><span class='match'>sense<\/span><\/li>\n  <li>the<span class='match'>refore<\/span><\/li>\n  <li>u<span class='match'>nderstand<\/span><\/li>\n  <li>w<span class='match'>hethe<\/span>r<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-b7889e40e9207210e953" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b7889e40e9207210e953">{"x":{"html":"<ul>\n  <li>ap<span class='match'>propr<\/span>iate<\/li>\n  <li><span class='match'>church<\/span><\/li>\n  <li>c<span class='match'>ondition<\/span><\/li>\n  <li><span class='match'>decide<\/span><\/li>\n  <li><span class='match'>environmen<\/span>t<\/li>\n  <li>l<span class='match'>ondon<\/span><\/li>\n  <li>pa<span class='match'>ragra<\/span>ph<\/li>\n  <li>p<span class='match'>articular<\/span><\/li>\n  <li><span class='match'>photograph<\/span><\/li>\n  <li>p<span class='match'>repare<\/span><\/li>\n  <li>p<span class='match'>ressure<\/span><\/li>\n  <li>r<span class='match'>emem<\/span>ber<\/li>\n  <li><span class='match'>repre<\/span>sent<\/li>\n  <li><span class='match'>require<\/span><\/li>\n  <li><span class='match'>sense<\/span><\/li>\n  <li>the<span class='match'>refore<\/span><\/li>\n  <li>u<span class='match'>nderstand<\/span><\/li>\n  <li>w<span class='match'>hethe<\/span>r<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <pre class="r"><code>#repeated letters
 str_view_match(words, &quot;(.).*\\1.*\\1&quot;)</code></pre>
-<div id="htmlwidget-de62ee71900b2218976f" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-de62ee71900b2218976f">{"x":{"html":"<ul>\n  <li>a<span class='match'>pprop<\/span>riate<\/li>\n  <li><span class='match'>availa<\/span>ble<\/li>\n  <li>b<span class='match'>elieve<\/span><\/li>\n  <li>b<span class='match'>etwee<\/span>n<\/li>\n  <li>bu<span class='match'>siness<\/span><\/li>\n  <li>d<span class='match'>egree<\/span><\/li>\n  <li>diff<span class='match'>erence<\/span><\/li>\n  <li>di<span class='match'>scuss<\/span><\/li>\n  <li><span class='match'>eleve<\/span>n<\/li>\n  <li>e<span class='match'>nvironmen<\/span>t<\/li>\n  <li><span class='match'>evidence<\/span><\/li>\n  <li><span class='match'>exercise<\/span><\/li>\n  <li><span class='match'>expense<\/span><\/li>\n  <li><span class='match'>experience<\/span><\/li>\n  <li><span class='match'>indivi<\/span>dual<\/li>\n  <li>p<span class='match'>aragra<\/span>ph<\/li>\n  <li>r<span class='match'>eceive<\/span><\/li>\n  <li>r<span class='match'>emembe<\/span>r<\/li>\n  <li>r<span class='match'>eprese<\/span>nt<\/li>\n  <li>t<span class='match'>elephone<\/span><\/li>\n  <li>th<span class='match'>erefore<\/span><\/li>\n  <li>t<span class='match'>omorro<\/span>w<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-42fe9af9e928a7efe1a5" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-42fe9af9e928a7efe1a5">{"x":{"html":"<ul>\n  <li>a<span class='match'>pprop<\/span>riate<\/li>\n  <li><span class='match'>availa<\/span>ble<\/li>\n  <li>b<span class='match'>elieve<\/span><\/li>\n  <li>b<span class='match'>etwee<\/span>n<\/li>\n  <li>bu<span class='match'>siness<\/span><\/li>\n  <li>d<span class='match'>egree<\/span><\/li>\n  <li>diff<span class='match'>erence<\/span><\/li>\n  <li>di<span class='match'>scuss<\/span><\/li>\n  <li><span class='match'>eleve<\/span>n<\/li>\n  <li>e<span class='match'>nvironmen<\/span>t<\/li>\n  <li><span class='match'>evidence<\/span><\/li>\n  <li><span class='match'>exercise<\/span><\/li>\n  <li><span class='match'>expense<\/span><\/li>\n  <li><span class='match'>experience<\/span><\/li>\n  <li><span class='match'>indivi<\/span>dual<\/li>\n  <li>p<span class='match'>aragra<\/span>ph<\/li>\n  <li>r<span class='match'>eceive<\/span><\/li>\n  <li>r<span class='match'>emembe<\/span>r<\/li>\n  <li>r<span class='match'>eprese<\/span>nt<\/li>\n  <li>t<span class='match'>elephone<\/span><\/li>\n  <li>th<span class='match'>erefore<\/span><\/li>\n  <li>t<span class='match'>omorro<\/span>w<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div id="tools" class="section level3">
@@ -4569,7 +4575,7 @@ str_view_match(words, &quot;(.).*\\1.*\\1&quot;)</code></pre>
 <div id="detect-matches" class="section level4">
 <h4>14.4.2 Detect matches</h4>
 <ol style="list-style-type: decimal">
-<li>For each of the following challenges, try solving by using both a single regular expression, and a combination of multiple str_detect() calls.</li>
+<li>For each of the following challenges, try solving by using both a single regular expression, and a combination of multiple <code>str_detect()</code> calls.</li>
 </ol>
 <ul>
 <li>Find all words that start or end with x.</li>
@@ -4578,8 +4584,8 @@ str_view_match(words, &quot;(.).*\\1.*\\1&quot;)</code></pre>
 </ul>
 <pre class="r"><code># start or end with x 
 str_view_match(words, &quot;^x|x$&quot;) #single regex</code></pre>
-<div id="htmlwidget-a0532bad9f259ad339b4" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-a0532bad9f259ad339b4">{"x":{"html":"<ul>\n  <li>bo<span class='match'>x<\/span><\/li>\n  <li>se<span class='match'>x<\/span><\/li>\n  <li>si<span class='match'>x<\/span><\/li>\n  <li>ta<span class='match'>x<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-ed7640f81c1b25cb1d0c" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ed7640f81c1b25cb1d0c">{"x":{"html":"<ul>\n  <li>bo<span class='match'>x<\/span><\/li>\n  <li>se<span class='match'>x<\/span><\/li>\n  <li>si<span class='match'>x<\/span><\/li>\n  <li>ta<span class='match'>x<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <pre class="r"><code># multiple str_detect() calls
 start_x &lt;- str_detect(words, &quot;^x&quot;)
 end_x &lt;- str_detect(words, &quot;x$&quot;)
@@ -4856,10 +4862,10 @@ str_subset(strings, fixed(&quot;\\&quot;))</code></pre>
 <h2>Topic 4: Work with the singer data</h2>
 <div id="use-purrr-to-map-latitude-and-longitude-into-human-readable-information-on-the-bands-origin-places." class="section level3">
 <h3>4.1 Use <code>purrr</code> to map latitude and longitude into human readable information on the band’s origin places.</h3>
-<p>Notice that <code>revgeocode(... , output = &quot;more&quot;)</code> outputs a dataframe, while <code>revgeocode(... , output = &quot;address&quot;)</code> returns a string: you have the option of dealing with nested dataframes. You will need to pay attention to two things:</p>
+<p>Notice that <code>revgeocode(... , output = &quot;more&quot;)</code> outputs a data frame, while <code>revgeocode(... , output = &quot;address&quot;)</code> returns a string: you have the option of dealing with nested data frames. You will need to pay attention to two things:</p>
 <ul>
 <li>Not all of the track have a latitude and longitude: what can we do with the missing information? (filtering, …)</li>
-<li>Not all of the time we make a research through revgeocode() we get a result. What can we do to avoid those errors to bite us? (look at possibly() in purrr…)</li>
+<li>Not all of the time we make a research through <code>revgeocode()</code> we get a result. What can we do to avoid those errors to bite us? (look at possibly() in purrr…)</li>
 </ul>
 <p>First, I need to load the necessary packages and register my google API key to use <code>ggmap()</code>.</p>
 <pre class="r"><code>library(tidyverse)
@@ -4868,8 +4874,8 @@ install_github(&quot;dkahle/ggmap&quot;)
 library(ggplot2)
 library(ggmap)
 register_google(&quot;AIzaSyCZDZzfVa_lzlESRafTcuwH1BzethDNdcQ&quot;)</code></pre>
-<p>The dataset <code>singer_locations</code> contains information about songs and associated artists in the <a href="https://labrosa.ee.columbia.edu/millionsong/">Million Song Dataset</a>.</p>
-<p>Let’s look at this dataframe:</p>
+<p>The data set <code>singer_locations</code> contains information about songs and associated artists in the <a href="https://labrosa.ee.columbia.edu/millionsong/">Million Song Dataset</a>.</p>
+<p>Let’s look at this data frame:</p>
 <pre class="r"><code>library(singer)
 str(singer_locations)</code></pre>
 <pre><code>## Classes 'tbl_df', 'tbl' and 'data.frame':    10100 obs. of  14 variables:
@@ -5238,7 +5244,7 @@ Pennsylvania
 </tr>
 </tbody>
 </table>
-<p>The <code>singer_locations</code> dataframe contains geographical information associated with the artist location stored in two different formats: 1. as a (dirty!) variable named city; 2. as a latitude / longitude pair (stored in latitude, longitude respectively).</p>
+<p>The <code>singer_locations</code> data frame contains geographical information associated with the artist location stored in two different formats: 1. as a (dirty!) variable named city; 2. as a latitude / longitude pair (stored in latitude, longitude respectively).</p>
 <p>From the output of the first songs, we can see that some tracks don’t have this geographical information so I will filter to have only the ones that do contain this information.</p>
 <pre class="r"><code>singer_geo &lt;- singer_locations %&gt;%
   filter(!is.na(city)) %&gt;%
@@ -5397,7 +5403,7 @@ Bonn
 <pre><code>## [1] 10100</code></pre>
 <pre class="r"><code>nrow(singer_geo)</code></pre>
 <pre><code>## [1] 4129</code></pre>
-<p>After, filtering the new dataframe <code>singer_geo</code> has 4129 observations, compared to 10100 that the original dataframe had. However, as there are still so many observations, I will only work with the first 25 songs. As there are many variables too, I will only keep a few to have an easier dataset to look at.</p>
+<p>After, filtering the new data frame <code>singer_geo</code> has 4129 observations, compared to 10100 that the original data frame had. However, as there are still so many observations, I will only work with the first 25 songs. As there are many variables too, I will only keep a few to have an easier data set to look at.</p>
 <pre class="r"><code>singer_geo &lt;- singer_geo[1:25,]
 singer_geo %&gt;%
   kable() %&gt;%
@@ -5982,7 +5988,7 @@ Aberdeen, Scotland
 ## [23] &quot;ICastle view, Borris in ossory, Laois, Borris in ossory, Co. Laois, Ireland&quot;
 ## [24] &quot;3788 Pontiac Trail, Ann Arbor, MI 48105, USA&quot;                               
 ## [25] &quot;91 Hutcheon St, Aberdeen AB25 1EW, UK&quot;</code></pre>
-<p>Now <code>singer_address</code> contains the coressponding addresses from the given coordinates. Let’s see if these addresses match with the variable <code>city</code>.</p>
+<p>Now <code>singer_address</code> contains the corresponding addresses from the given coordinates. Let’s see if these addresses match with the variable <code>city</code>.</p>
 </div>
 <div id="try-to-check-wether-the-place-in-city-corresponds-to-the-information-you-retrieved." class="section level3">
 <h3>4.2 Try to check wether the place in city corresponds to the information you retrieved.</h3>
@@ -6211,7 +6217,7 @@ stri_detect_fixed(sing_add_city$address, sing_add_city$city)</code></pre>
 ## [12] FALSE  TRUE  TRUE FALSE  TRUE  TRUE FALSE  TRUE FALSE  TRUE FALSE
 ## [23]  TRUE  TRUE FALSE</code></pre>
 <p>From the output, we can see that 8 of the observations don’t match. But some of these mismatches are because some cities/countries are in capitals in the column <code>city</code>.</p>
-<p>I will try this again, puting all in low case.</p>
+<p>I will try this again, putting all in low case.</p>
 <pre class="r"><code>low_address &lt;- str_to_lower(sing_add_city$address)
 low_city &lt;- str_to_lower(sing_add_city$city)
 words_address &lt;- str_split(low_address, boundary(&quot;word&quot;))
@@ -6298,7 +6304,7 @@ mapply(intersect, words_address, words_city) %&gt;%
 ## 
 ## [[25]]
 ## [1] TRUE</code></pre>
-<p>After applying the previous code, the mismatches were reduced from 8 to 3. One of these is a true mismatch, since address = San Francisco, and city = New York. The other two cases are because in the column <code>city</code> only appears the state, and in the column address this state is abbreviated so they don’t match.</p>
+<p>After applying the previous code, the mismatches were reduced from 8 to 3. Observation number 15 is a true mismatch, since address = San Francisco, and city = New York. The other two cases are because in the column <code>city</code> only appears the state, and in the column address this state is abbreviated so they don’t match.</p>
 <p>This things could potentially be true to different methods (i.e. having the states abbreviated in both columns) but it may compromise the accuracy of the output.</p>
 </div>
 <div id="go-visual" class="section level3">
@@ -6310,10 +6316,23 @@ singer_geo %&gt;%
   addTiles() %&gt;%  
   addCircles(lng = singer_geo$longitude,
              lat = singer_geo$latitude,
-             popup = singer_geo$artist_name)</code></pre>
-<div id="htmlwidget-515197ba8df7ca9569da" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-515197ba8df7ca9569da">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircles","args":[[41.88415,40.71455,42.33168,40.99471,34.20034,50.7323,19.59009,34.05349,40.5725,45.51179,51.50632,42.50172,40.43831,40.71455,37.77916,40.71455,34.05349,37.27188,8.4177,47.38028,41.88415,62.19845,53.41961,42.32807,57.15382],[-87.63241,-74.00712,-83.04792,-77.60454,-119.18044,7.10169,-155.43414,-118.24532,-74.154,-122.67563,-0.12714,12.88512,-79.99745,-74.00712,-122.42005,-74.00712,-118.24532,-119.27023,-80.11278,-122.23742,-87.63241,17.55142,-8.24055,-83.7336,-2.10679],10,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},["Gene Chandler","Paul Horn","Dorothy Ashby","Barleyjuice","Madlib","Seeed's Pharaoh Riddim Feat. General Degree","Keali'i Reichel","Little Feat","Joan Baez","31Knots","Bleep","Lucio Battisti","Ray Brown Trio / Ralph Moore","iio","Tom Lehrer","John Zorn","The Meeting Places","Deep Forest","Billy Cobham","Daphne Loves Derby","SOiL","Run Level Zero","Clannad","Tally Hall","Old Blind Dogs"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]}],"limits":{"lat":[8.4177,62.19845],"lng":[-155.43414,17.55142]}},"evals":[],"jsHooks":[]}</script>
+             popup = singer_geo$artist_name, 
+             color = &quot;deeppink&quot;)</code></pre>
+<div id="htmlwidget-cde4d02aeeda33bd03e0" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-cde4d02aeeda33bd03e0">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircles","args":[[41.88415,40.71455,42.33168,40.99471,34.20034,50.7323,19.59009,34.05349,40.5725,45.51179,51.50632,42.50172,40.43831,40.71455,37.77916,40.71455,34.05349,37.27188,8.4177,47.38028,41.88415,62.19845,53.41961,42.32807,57.15382],[-87.63241,-74.00712,-83.04792,-77.60454,-119.18044,7.10169,-155.43414,-118.24532,-74.154,-122.67563,-0.12714,12.88512,-79.99745,-74.00712,-122.42005,-74.00712,-118.24532,-119.27023,-80.11278,-122.23742,-87.63241,17.55142,-8.24055,-83.7336,-2.10679],10,null,null,{"interactive":true,"className":"","stroke":true,"color":"deeppink","weight":5,"opacity":0.5,"fill":true,"fillColor":"deeppink","fillOpacity":0.2},["Gene Chandler","Paul Horn","Dorothy Ashby","Barleyjuice","Madlib","Seeed's Pharaoh Riddim Feat. General Degree","Keali'i Reichel","Little Feat","Joan Baez","31Knots","Bleep","Lucio Battisti","Ray Brown Trio / Ralph Moore","iio","Tom Lehrer","John Zorn","The Meeting Places","Deep Forest","Billy Cobham","Daphne Loves Derby","SOiL","Run Level Zero","Clannad","Tally Hall","Old Blind Dogs"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]}],"limits":{"lat":[8.4177,62.19845],"lng":[-155.43414,17.55142]}},"evals":[],"jsHooks":[]}</script>
+<p>The map can show the artist name that corresponds to the city of each pink circle.</p>
 </div>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<ul>
+<li><a href="https://www.trifacta.com/data-wrangling/">What is Data Wrangling?</a></li>
+<li><a href="https://r4ds.had.co.nz/strings.html">Strings</a></li>
+<li><a href="https://github.com/dkahle/ggmap/issues/51#issuecomment-428947722">Google API key</a></li>
+<li><a href="https://cran.r-project.org/web/packages/ggmap/ggmap.pdf">ggmap</a></li>
+<li><a href="https://stackoverflow.com/questions/22911642/applying-revgeocode-to-a-list-of-longitude-latitude-coordinates">Applying revgecode</a></li>
+<li><a href="https://stackoverflow.com/questions/10128617/test-if-characters-are-in-a-string">Test if charachters are in a string</a></li>
+</ul>
 </div>
 
 
