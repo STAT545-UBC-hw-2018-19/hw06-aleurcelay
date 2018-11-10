@@ -11,10 +11,10 @@ To review my assignment, please use the following link which displays the html o
 :star2: [hw_06_HTML](http://rpubs.com/aleurcelay/438133)
 
 
+
 Other files:
 
-[R Markdown](hw06_data_wrangling.Rmd) which contains the original code.
-
-[README](README.md) 
+* [R Markdown](hw06_data_wrangling.Rmd) which contains the original code.
+* [README](README.md) 
 
 
